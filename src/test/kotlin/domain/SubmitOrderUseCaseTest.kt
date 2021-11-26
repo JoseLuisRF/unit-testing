@@ -75,4 +75,25 @@ internal class SubmitOrderUseCaseTest {
             ), response
         )
     }
+
+    @Test
+    fun `GIVEN an order WHEN the order is empty, THEN verify the transaction fails and error code equals to empty-order`(){
+        // Create unit test :)
+    }
+
+    @Test
+    fun `GIVEN an order WHEN the order is empty, THEN verify the transaction fails and error code equals to out-of-stock`(){
+        // Create unit test :)
+    }
+
+    @Test
+    fun `GIVEN an order WHEN the order is empty, THEN verify the transaction fails and error code equals to unknown-item`(){
+        // Create unit test :)
+    }
+
+
+    @Test
+    fun `GIVEN an order WHEN the order is empty, THEN verify the transaction fails and error code equals to order-already-fulfilled`(){
+        // Create unit test :)
+    }
 }
