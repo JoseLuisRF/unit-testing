@@ -1,5 +1,6 @@
-package domain
+package domain.stub
 
+import domain.WarehouseService
 import domain.model.Item
 
 class WarehouseServiceImpl : WarehouseService {

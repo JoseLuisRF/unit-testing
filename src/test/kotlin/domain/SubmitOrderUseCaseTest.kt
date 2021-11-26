@@ -3,21 +3,29 @@ package domain
 import domain.model.Item
 import domain.model.Order
 import domain.model.User
+import domain.stub.WarehouseServiceImpl
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlin.test.Ignore
 import kotlin.test.assertEquals
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 internal class SubmitOrderUseCaseTest {
 
-    private val mockWarehouseService: WarehouseService = mockk()
+    private val stubWarehouseService: WarehouseService = WarehouseServiceImpl()
     private val mockMailerService: MailerService = mockk()
 
     private val sut = SubmitOrderUseCase(
-        warehouseService = mockWarehouseService,
+        warehouseService = stubWarehouseService,
         mailerService = mockMailerService
     )
+
+    @BeforeEach
+    fun setup() {
+        stubWarehouseService.loadItem(Item.CocaCola, 10)
+    }
 
     @Test
     fun `GIVEN an order WHEN the quantity item is available, THEN submit order transaction is successful `() {
@@ -31,18 +39,15 @@ internal class SubmitOrderUseCaseTest {
             )
         )
 
-        every { mockWarehouseService.getInventory(any()) } returns 10
-        every { mockWarehouseService.update(any(), any()) } returns 8
         every { mockMailerService.sendEmail(any()) } returns true
 
         val response = sut.execute(
             order = fakeOrder
         )
 
-        verify(exactly = 1) { mockWarehouseService.getInventory(any()) }
-        verify(exactly = 1) { mockWarehouseService.update(any(), any()) }
         verify(exactly = 1) { mockMailerService.sendEmail(any()) }
 
+        assertEquals(8, stubWarehouseService.getInventory(Item.CocaCola))
         assertEquals(SubmitOrderUseCase.Response.Success, response)
     }
 
@@ -58,17 +63,15 @@ internal class SubmitOrderUseCaseTest {
             )
         )
 
-        every { mockWarehouseService.getInventory(any()) } returns 10
         every { mockMailerService.sendEmail(any()) } returns false
 
         val response = sut.execute(
             order = fakeOrder
         )
 
-        verify(exactly = 1) { mockWarehouseService.getInventory(any()) }
-        verify(exactly = 0) { mockWarehouseService.update(any(), any()) }
         verify(exactly = 0) { mockMailerService.sendEmail(any()) }
 
+        assertEquals(10, stubWarehouseService.getInventory(Item.CocaCola))
         assertEquals(
             SubmitOrderUseCase.Response.Error(
                 errorCode = OrderErrors.OUT_OF_STOCK
@@ -76,22 +79,25 @@ internal class SubmitOrderUseCaseTest {
         )
     }
 
+    @Ignore
     @Test
     fun `GIVEN an order WHEN the order is empty, THEN verify the transaction fails and error code equals to empty-order`(){
         // Create unit test :)
     }
 
+    @Ignore
     @Test
     fun `GIVEN an order WHEN the order is empty, THEN verify the transaction fails and error code equals to out-of-stock`(){
         // Create unit test :)
     }
 
+    @Ignore
     @Test
     fun `GIVEN an order WHEN the order is empty, THEN verify the transaction fails and error code equals to unknown-item`(){
         // Create unit test :)
     }
 
-
+    @Ignore
     @Test
     fun `GIVEN an order WHEN the order is empty, THEN verify the transaction fails and error code equals to order-already-fulfilled`(){
         // Create unit test :)

@@ -1,7 +1,5 @@
 package domain.model
 
-import domain.WarehouseService
-
 data class User(
     val name: String,
     val email: String,
@@ -13,5 +11,4 @@ data class Order(
     val user: User
     ) {
     var isFilled = false
-
 }
