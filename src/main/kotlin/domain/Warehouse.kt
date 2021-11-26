@@ -8,6 +8,5 @@ interface Warehouse {
 
     fun loadItem(item: Item, quantity: Int) : Int
 
-
     fun update(item: Item, quantity: Int) : Int
 }

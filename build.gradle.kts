@@ -22,6 +22,7 @@ dependencies {
      * functions which delegate to the Asserter.
      */
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.6.0")
+    testImplementation("io.mockk:mockk:1.12.1")
     implementation(kotlin("stdlib-jdk8"))
 }
 
