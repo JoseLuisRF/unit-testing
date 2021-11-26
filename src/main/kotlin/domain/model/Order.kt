@@ -1,29 +1,17 @@
 package domain.model
 
-import domain.Warehouse
+import domain.WarehouseService
 
-data class Order(val item: Item, val quantity: Int) {
+data class User(
+    val name: String,
+    val email: String,
+    val address: String
+)
+data class Order(
+    val item: Item,
+    val quantity: Int,
+    val user: User
+    ) {
     var isFilled = false
 
-    fun fill(warehouse: Warehouse) {
-        val stock = warehouse.getInventory(item)
-        if (!isFilled) {
-            stock?.let {
-                when {
-                    quantity > 0 && quantity <= stock -> {
-                        warehouse.update(item, stock - quantity)
-                        isFilled = true
-                    }
-                    quantity > 0 && quantity >= stock -> {
-                        isFilled = false
-                    }
-                    else -> {
-                        isFilled = false
-                    }
-                }
-            } ?: run {
-                isFilled = false
-            }
-        }
-    }
 }

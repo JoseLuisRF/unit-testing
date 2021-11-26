@@ -2,7 +2,7 @@ package domain
 
 import domain.model.Item
 
-class WarehouseImpl : Warehouse {
+class WarehouseServiceImpl : WarehouseService {
 
     private val dataset = mutableMapOf<String, Int>()
 

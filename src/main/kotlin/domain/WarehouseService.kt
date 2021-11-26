@@ -2,7 +2,7 @@ package domain
 
 import domain.model.Item
 
-interface Warehouse {
+interface WarehouseService {
 
     fun getInventory(item: Item): Int?
 
